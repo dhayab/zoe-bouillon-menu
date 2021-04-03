@@ -64,11 +64,17 @@ async function tick() {
 		chat_id: TELEGRAM_CHAT_ID,
 		parse_mode: 'MarkdownV2',
 		text: format(menu),
+		reply_markup: {
+			inline_keyboard: [
+				[{ text: 'Deliveroo', url: 'https://deliveroo.fr/fr/menu/paris/19eme-belleville/zoe-bouillon' }],
+				[{ text: 'Uber Eats', url: 'https://www.ubereats.com/fr/paris/food-delivery/zoe-bouillon/5oz-DZSnSueGIWKhEjtbdw' }],
+			],
+		},
 	}
 
 	try {
-		const request = await superagent.get(`${TELEGRAM_API_ROOT}/sendMessage`)
-			.query(payload)
+		const request = await superagent.post(`${TELEGRAM_API_ROOT}/sendMessage`)
+			.send(payload)
 
 		if (request.body.ok) {
 			console.log('> success')

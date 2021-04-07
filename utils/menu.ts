@@ -1,9 +1,9 @@
 import cheerio from 'cheerio';
 import { createHmac } from 'crypto';
 
-const hash = (content: string): string => {
+const hash = (data: {}): string => {
 	const hmac = createHmac('sha256', '')
-	hmac.update(content)
+	hmac.update(JSON.stringify(data))
 	return hmac.digest('base64')
 }
 
@@ -28,7 +28,24 @@ export class Menu {
 	constructor(page: string) {
 		this.$ = cheerio.load(page)
 		this.date = this.$('body').text().match(/Menu du jour\ ?: (\w+ \w+ \w+)/)?.[1] ?? 'unknown date'
-		this.hash = hash(page)
+
+		this.section('Entrées')
+		this.entry('Les soupes Veggy')
+		this.entry('Les cakes veggy')
+		this.entry('Le zandwich chô', (nodes) => nodes.last().next().text())
+		this.entry('Les salades veggy ou pas')
+		this.section('Plats')
+		this.entry('Les plats veggy ou pas')
+		this.entry('Le Grosso (gros zandwich)')
+		this.section('Desserts')
+		this.entry('Les entremets', (nodes) => nodes.last().prev().text())
+		this.entry('Les cakes sucrés', (nodes) => {
+			const price = nodes.last().closest('[data-testid=inline-content]').parent().next().text()
+			const text = nodes.last().parent().text()
+			return price + text
+		})
+
+		this.hash = hash(this.toJson())
 	}
 
 	entry(name: string, iterator?: (nodes: cheerio.Cheerio) => string) {

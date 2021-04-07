@@ -65,10 +65,10 @@ async function tick() {
 		parse_mode: 'MarkdownV2',
 		text: format(menu),
 		reply_markup: {
-			inline_keyboard: [
-				[{ text: 'Deliveroo', url: 'https://deliveroo.fr/fr/menu/paris/19eme-belleville/zoe-bouillon' }],
-				[{ text: 'Uber Eats', url: 'https://www.ubereats.com/fr/paris/food-delivery/zoe-bouillon/5oz-DZSnSueGIWKhEjtbdw' }],
-			],
+			inline_keyboard: [[
+				{ text: 'Deliveroo', url: 'https://deliveroo.fr/fr/menu/paris/19eme-belleville/zoe-bouillon' },
+				{ text: 'Uber Eats', url: 'https://www.ubereats.com/fr/paris/food-delivery/zoe-bouillon/5oz-DZSnSueGIWKhEjtbdw' },
+			]],
 		},
 	}
 
